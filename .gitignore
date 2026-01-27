@@ -1,0 +1,103 @@
+# ============================================
+# Dependencies
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================
+# Build Output
+# ============================================
+dist/
+build/
+*.tsbuildinfo
+
+# ============================================
+# TypeScript
+# ============================================
+*.js.map
+*.d.ts.map
+
+# ============================================
+# Testing
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================
+# IDEs and Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Logs
+# ============================================
+logs/
+*.log
+lerna-debug.log*
+
+# ============================================
+# Docker
+# ============================================
+# No ignorar docker-compose.yml (es necesario para el proyecto)
+# Pero sí ignorar volúmenes y datos locales
+.docker/
+docker-compose.override.yml
+
+# ============================================
+# Database
+# ============================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================
+# Temporary Files
+# ============================================
+tmp/
+temp/
+*.tmp
+*.temp
+
+# ============================================
+# Frontend Specific (React/Vite)
+# ============================================
+.vite/
+.cache/
+.parcel-cache/
+
+# ============================================
+# Backend Specific
+# ============================================
+# Mantener las migraciones (son importantes)
+# !backend/src/migrations/**/*.ts
