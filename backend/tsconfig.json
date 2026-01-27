@@ -12,7 +12,16 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+
+        "baseUrl": ".",
+        "paths": {
+            "@config/*": ["src/config/*"],
+            "@controllers/*": ["src/controllers/*"],
+            "@entities/*": ["src/entities/*"],
+            "@migrations/*": ["src/migrations/*"],
+            "@routes/*": ["src/routes/*"]
+        }
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]

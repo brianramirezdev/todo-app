@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { Todo } from '../entities/Todo';
+import { Todo } from '@entities/Todo';
 
 dotenv.config();
 

@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon --exec ts-node src/index.ts",
+        "dev-old": "nodemon --exec ts-node src/index.ts",
+        "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
         "build": "tsc",
         "start": "node dist/index.js",
         "test": "set NODE_ENV=test && jest",
@@ -33,6 +34,7 @@
         "nodemon": "^3.1.11",
         "ts-jest": "^29.4.6",
         "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
         "typescript": "^5.9.3"
     }
 }
