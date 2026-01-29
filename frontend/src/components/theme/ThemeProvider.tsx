@@ -1,48 +1,75 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'system';
+type Mode = 'dark' | 'light' | 'system';
+type Palette = 'indigo' | 'moss';
 
 type ThemeProviderProps = {
     children: React.ReactNode;
-    defaultTheme?: Theme;
-    storageKey?: string;
+    defaultMode?: Mode;
+    defaultPalette?: Palette;
+    storageKeyMode?: string;
+    storageKeyPalette?: string;
 };
 
 type ThemeProviderState = {
-    theme: Theme;
-    setTheme: (theme: Theme) => void;
+    mode: Mode;
+    palette: Palette;
+    setMode: (mode: Mode) => void;
+    setPalette: (palette: Palette) => void;
 };
 
 const initialState: ThemeProviderState = {
-    theme: 'system',
-    setTheme: () => null,
+    mode: 'system',
+    palette: 'indigo',
+    setMode: () => null,
+    setPalette: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 'vite-ui-theme', ...props }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
+export function ThemeProvider({
+    children,
+    defaultMode = 'system',
+    defaultPalette = 'indigo',
+    storageKeyMode = 'vite-ui-mode',
+    storageKeyPalette = 'vite-ui-palette',
+    ...props
+}: ThemeProviderProps) {
+    const [mode, setMode] = useState<Mode>(() => (localStorage.getItem(storageKeyMode) as Mode) || defaultMode);
+    const [palette, setPalette] = useState<Palette>(() => (localStorage.getItem(storageKeyPalette) as Palette) || defaultPalette);
 
     useEffect(() => {
         const root = window.document.documentElement;
 
+        // Manage Mode
         root.classList.remove('light', 'dark');
-
-        if (theme === 'system') {
+        if (mode === 'system') {
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
             root.classList.add(systemTheme);
-            return;
+        } else {
+            root.classList.add(mode);
         }
 
-        root.classList.add(theme);
-    }, [theme]);
+        // Manage Palette
+        // Remove all theme classes first
+        root.classList.forEach((className) => {
+            if (className.startsWith('theme-')) {
+                root.classList.remove(className);
+            }
+        });
+        root.classList.add(`theme-${palette}`);
+    }, [mode, palette]);
 
     const value = {
-        theme,
-        setTheme: (theme: Theme) => {
-            localStorage.setItem(storageKey, theme);
-            setTheme(theme);
+        mode,
+        palette,
+        setMode: (mode: Mode) => {
+            localStorage.setItem(storageKeyMode, mode);
+            setMode(mode);
+        },
+        setPalette: (palette: Palette) => {
+            localStorage.setItem(storageKeyPalette, palette);
+            setPalette(palette);
         },
     };
 
@@ -55,8 +82,6 @@ export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 
 
 export const useTheme = () => {
     const context = useContext(ThemeProviderContext);
-
     if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
-
     return context;
 };

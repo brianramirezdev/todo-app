@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Search, CheckCircle2, Circle, StickyNote, Tag, Calendar, LayoutGrid } from 'lucide-react';
 import { ModeToggle } from './theme/ModeToggle';
+import { PaletteToggle } from './theme/PaletteToggle';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import type { TodoStatus } from '@/services/api';
@@ -114,9 +115,13 @@ export function AppSidebar({ searchQuery, onSearchChange, filter, onFilterChange
             <SidebarFooter className="p-4 border-t border-border">
                 <div className="flex items-center justify-between px-2">
                     <span className="text-sm text-muted-foreground font-medium">Tema</span>
-                    <ModeToggle />
+                    <div className="flex items-center gap-2">
+                        <PaletteToggle />
+                        <ModeToggle />
+                    </div>
                 </div>
             </SidebarFooter>
+
         </Sidebar>
     );
 }
