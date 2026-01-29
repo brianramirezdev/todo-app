@@ -78,14 +78,14 @@ Base URL: `http://localhost:3001/api` (vía Docker) o `http://localhost:3000/api
 
 ## 🧪 Testing
 
-El proyecto incluye tests de integración que cubren el CRUD completo y validaciones de borde.
+El backend incluye **tests de integración** con **Jest + Supertest**.
 
-```bash
-# Ejecutar tests
-npm test
-```
+### ▶️ Ejecutar tests con Docker (recomendado)
 
-Los tests utilizan una base de datos en memoria o configurada específicamente para testing (`test-data-source.ts`) para no afectar los datos de desarrollo.
+Con los contenedores levantados:
+
+````bash
+docker compose exec backend npm test
 
 ---
 
@@ -95,4 +95,4 @@ Los tests utilizan una base de datos en memoria o configurada específicamente p
 npm install
 npm run build
 npm start
-```
+````
