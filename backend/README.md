@@ -84,8 +84,9 @@ El backend incluye **tests de integración** con **Jest + Supertest**.
 
 Con los contenedores levantados:
 
-````bash
+```bash
 docker compose exec backend npm test
+```
 
 ---
 
@@ -95,4 +96,4 @@ docker compose exec backend npm test
 npm install
 npm run build
 npm start
-````
+```
