@@ -1,6 +1,7 @@
-version: '3.8'
-
 services:
+    # -------------------------
+    # PostgreSQL
+    # -------------------------
     postgres:
         image: postgres:15-alpine
         container_name: todo-db
@@ -9,6 +10,7 @@ services:
             POSTGRES_PASSWORD: postgres
             POSTGRES_DB: todo_app
         ports:
+            # Expuesto solo para facilitar debug en local
             - '5432:5432'
         volumes:
             - postgres_data:/var/lib/postgresql/data
@@ -17,6 +19,61 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+        networks:
+            - todo-network
 
+    # -------------------------
+    # Backend (Node + Express)
+    # -------------------------
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        container_name: todo-backend
+        environment:
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+            DB_NAME: todo_app
+            PORT: 3000
+            NODE_ENV: production
+        ports:
+            # Puerto externo cambiado para evitar conflictos comunes (3000)
+            - '3001:3000'
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - todo-network
+        restart: unless-stopped
+
+    # -------------------------
+    # Frontend (React build + Nginx)
+    # -------------------------
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        container_name: todo-frontend
+        ports:
+            # Único punto de entrada público
+            - '80:80'
+        depends_on:
+            - backend
+        networks:
+            - todo-network
+        restart: unless-stopped
+
+# -------------------------
+# Volúmenes
+# -------------------------
 volumes:
     postgres_data:
+
+# -------------------------
+# Red
+# -------------------------
+networks:
+    todo-network:
+        driver: bridge
