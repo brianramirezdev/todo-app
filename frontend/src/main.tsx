@@ -7,7 +7,7 @@ import { Toaster } from './components/ui/sonner.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <ThemeProvider>
             <App />
             <Toaster position="top-right" richColors={false} />
         </ThemeProvider>

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Mode = 'dark' | 'light' | 'system';
-type Palette = 'indigo' | 'moss';
+type Palette = 'indigo' | 'moss' | 'charcoal' | 'punchy' | 'queater';
 
 type ThemeProviderProps = {
     children: React.ReactNode;

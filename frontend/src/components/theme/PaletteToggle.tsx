@@ -10,6 +10,9 @@ export function PaletteToggle() {
     const palettes = [
         { id: 'indigo', name: 'Indigo', color: 'bg-[#27187E]' },
         { id: 'moss', name: 'Moss', color: 'bg-[#70a184]' },
+        { id: 'charcoal', name: 'Charcoal', color: 'bg-[#2A2529]' },
+        { id: 'punchy', name: 'Punchy', color: 'bg-[#DD3A44]' },
+        { id: 'queater', name: 'Queater', color: 'bg-[#EC5E27]' },
     ] as const;
 
     return (
