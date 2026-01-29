@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import type { Todo, TodoStatus } from './services/api';
 import { todoApi } from './services/api';
 import { TodoInput } from './components/TodoInput';
-import { TodoItem } from './components/TodoItem';
 import { TodoFilters } from './components/TodoFilters';
 import { TodoSearch } from './components/TodoSearch';
 import { TodoSkeletonList } from './components/TodoSkeleton';
@@ -127,7 +126,7 @@ function App() {
                 </div>
 
                 {/* Main Card */}
-                <Card className="p-6 space-y-6 animate-in fade-in slide-in-from-bottom duration-500">
+                <Card className="p-6 space-y-6 animate-in fade-in slide-in-from-bottom duration-500 h-[80vh]">
                     {/* Input */}
                     <TodoInput onAdd={handleAddTodo} disabled={loading} />
 

@@ -6,7 +6,7 @@ interface TodoFiltersProps {
     currentFilter: TodoStatus;
     onFilterChange: (filter: TodoStatus) => void;
     activeTodosCount: number;
-    completedTodosCount: number;
+    completedTodosCount?: number;
 }
 
 export function TodoFilters({ currentFilter, onFilterChange, activeTodosCount, completedTodosCount }: TodoFiltersProps) {

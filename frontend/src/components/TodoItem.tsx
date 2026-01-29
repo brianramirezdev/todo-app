@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Trash2, Edit2, Check, X } from 'lucide-react';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { DeleteConfirmDialog } from './DeleteConfirmDialog';
+import { DeleteConfirmDialog } from '@/components/DeleteConfirmDialog';
 
 interface TodoItemProps {
     todo: Todo;

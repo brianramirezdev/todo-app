@@ -1,73 +1,94 @@
-# React + TypeScript + Vite
+# 🎨 Frontend - Todo App UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz de usuario moderna y reactiva construida con **React**, **Vite** y **Tailwind CSS v4**, diseñada para una experiencia de usuario fluida con animaciones y estados optimistas.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Stack Tecnológico
 
-## React Compiler
+- **Framework**: React 19
+- **Build Tool**: Vite 7
+- **Estilos**: Tailwind CSS v4 + Lucide React (iconos)
+- **Componentes**: shadcn/ui (Radix UI)
+- **Animaciones**: Framer Motion
+- **Estado/API**: Axios + React Hooks (useState/useEffect)
+- **Testing**: Vitest + React Testing Library
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📁 Estructura de Componentes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── ui/             # Componentes base (shadcn)
+│   │   ├── TodoInput.tsx   # Creación de tareas
+│   │   ├── TodoFilters.tsx # Filtros (All, Active, Completed)
+│   │   └── ...             # Otros componentes funcionales
+│   ├── services/           # Comunicación con la API (Axios)
+│   ├── App.tsx             # Orquestador principal y lógica de estado
+│   └── main.tsx            # Punto de entrada de React
+├── public/                 # Assets estáticos
+└── nginx.conf              # Configuración del proxy para Docker
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🌐 Comunicación con el Backend
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+El frontend utiliza un **proxy** para evitar problemas de CORS y simplificar las URLs.
+
+- **Desarrollo**: Configurado en `vite.config.ts` para redirigir `/api` a `http://localhost:3000`.
+- **Producción (Docker)**: Configurado en `nginx.conf` para redirigir `/api` al contenedor `backend:3000`.
+
+### Cliente API
+
+Las llamadas se centralizan en `src/services/api.ts`, asegurando un tipado fuerte para las respuestas del backend.
+
+---
+
+## 🧪 Testing
+
+Utilizamos **Vitest** para tests unitarios y de componentes.
+
+```bash
+# Ejecutar tests
+npm test
+
+# Ver cobertura
+npm run test:coverage
 ```
+
+---
+
+## 🚀 Ejecución
+
+### Modo Desarrollo
+
+```bash
+npm install
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`. Para que funcione, el backend debe estar corriendo en el puerto 3000.
+
+### Modo Docker (Producción)
+
+En Docker, el frontend se compila y se sirve mediante **Nginx**.
+
+```bash
+# Desde la raíz del proyecto
+docker compose up frontend --build
+```
+
+Disponible en `http://localhost:80`.
+
+---
+
+## ✨ Características Especiales
+
+- **Optimistic Updates**: Los cambios en el estado de las tareas se reflejan instantáneamente en la UI antes de confirmarse en el servidor.
+- **Responsive Design**: Totalmente adaptado a móviles y tablets.
+- **Skeletons**: Indicadores de carga para una mejor percepción de velocidad.
+- **Sonner Notifications**: Feedback visual elegante para cada acción.
