@@ -22,7 +22,7 @@ function App() {
         try {
             setLoading(true);
             setError(null);
-            const data = await todoApi.getTodos(filter);
+            const data = await todoApi.getTodos('all'); // Siempre cargamos todo para tener contadores exactos
             setTodos(data);
         } catch (err) {
             const errorMsg = 'Error al cargar las tareas. Verifica tu conexión.';
@@ -36,10 +36,15 @@ function App() {
 
     useEffect(() => {
         fetchTodos();
-    }, [filter]);
+    }, []); // Cargar una sola vez al inicio
 
-    // Filtrar todos por búsqueda
-    const filteredTodos = searchQuery.trim() ? todos.filter((todo) => todo.title.toLowerCase().includes(searchQuery.toLowerCase().trim())) : todos;
+    // Filtrar todos por búsqueda y por estado del filtro
+    const filteredTodos = todos.filter((todo) => {
+        const matchesSearch = !searchQuery.trim() || todo.title.toLowerCase().includes(searchQuery.toLowerCase().trim());
+        const matchesFilter = filter === 'all' || (filter === 'active' ? !todo.completed : todo.completed);
+        return matchesSearch && matchesFilter;
+    });
+
 
     // Crear todo
     const handleAddTodo = async (title: string) => {
@@ -133,7 +138,7 @@ function App() {
                         <div className="w-9 h-9" /> {/* Spacer */}
                     </header>
 
-                    <main className="flex-1 w-full max-w-7xl p-6 md:px-12 space-y-8 animate-in fade-in duration-300 overflow-y-hidden">
+                    <main className="flex-1 w-full max-w-8xl p-6 md:px-12 space-y-8 animate-in fade-in duration-300 overflow-y-hidden">
                         {/* Input Area */}
                         <div className="space-y-4">
                             <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl text-foreground">
