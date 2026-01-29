@@ -42,48 +42,78 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
 
     return (
         <>
-            <Card className="p-4 transition-all hover:shadow-md animate-in fade-in slide-in-from-bottom-2 duration-200">
-                <div className="flex items-center gap-3">
-                    <Checkbox checked={todo.completed} onCheckedChange={(checked) => onToggle(todo.id, checked as boolean)} disabled={isEditing} className="transition-transform" />
-
-                    {isEditing ? (
-                        <Input
-                            value={editTitle}
-                            onChange={(e) => setEditTitle(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSave();
-                                if (e.key === 'Escape') handleCancel();
-                            }}
-                            className="flex-1"
-                            autoFocus
-                            maxLength={255}
-                        />
-                    ) : (
-                        <span className={`flex-1 transition-all duration-200 truncate ${todo.completed ? 'line-through text-muted-foreground opacity-60' : 'text-foreground'}`}>
-                            {todo.title}
-                        </span>
-                    )}
-
-                    <div className="flex gap-2">
+            <Card className="h-full group transition-all hover:shadow-lg animate-in fade-in duration-200 border-muted/50 hover:border-primary/20 py-0">
+                <div className="p-5 flex flex-col h-full gap-4">
+                    <div className="flex-1 min-w-0">
                         {isEditing ? (
-                            <>
-                                <Button size="icon" variant="ghost" onClick={handleSave} className="transition-transform  hover:bg-green-100 dark:hover:bg-green-900">
-                                    <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                                </Button>
-                                <Button size="icon" variant="ghost" onClick={handleCancel} className="transition-transform hover:bg-red-100 dark:hover:bg-red-900">
-                                    <X className="h-4 w-4 text-red-600 dark:text-red-400" />
-                                </Button>
-                            </>
+                            <Input
+                                value={editTitle}
+                                onChange={(e) => setEditTitle(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleSave();
+                                    if (e.key === 'Escape') handleCancel();
+                                }}
+                                className="w-full"
+                                autoFocus
+                                maxLength={255}
+                            />
                         ) : (
-                            <>
-                                <Button size="icon" variant="ghost" onClick={() => setIsEditing(true)} disabled={todo.completed} className="transition-transform">
-                                    <Edit2 className="h-4 w-4" />
-                                </Button>
-                                <Button size="icon" variant="ghost" onClick={handleDeleteClick} className="transition-transform  hover:bg-red-100 dark:hover:bg-red-900">
-                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                </Button>
-                            </>
+                            <p
+                                className={`text-base font-medium leading-relaxed wrap-break-word transition-all duration-300 ${
+                                    todo.completed ? 'line-through text-muted-foreground/60' : 'text-foreground'
+                                }`}
+                            >
+                                {todo.title}
+                            </p>
                         )}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-muted/90">
+                        <div className="flex items-center gap-1">
+                            <Checkbox
+                                id={`todo-${todo.id}`}
+                                checked={todo.completed}
+                                onCheckedChange={(checked) => onToggle(todo.id, checked as boolean)}
+                                disabled={isEditing}
+                                className="h-5 w-5 transition-all data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                            />
+                            <label htmlFor={`todo-${todo.id}`} className="sr-only">
+                                Marcar como completada
+                            </label>
+                        </div>
+
+                        <div className="flex gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                            {isEditing ? (
+                                <>
+                                    <Button size="icon" variant="ghost" onClick={handleSave} className="h-8 w-8 text-primary hover:bg-primary/10">
+                                        <Check className="h-4 w-4" />
+                                    </Button>
+                                    <Button size="icon" variant="ghost" onClick={handleCancel} className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted">
+                                        <X className="h-4 w-4" />
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        onClick={() => setIsEditing(true)}
+                                        disabled={todo.completed}
+                                        className="h-8 w-8 text-muted-foreground hover:text-primary"
+                                    >
+                                        <Edit2 className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        onClick={handleDeleteClick}
+                                        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </Card>

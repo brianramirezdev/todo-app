@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface TodoInputProps {
     onAdd: (title: string) => void;
@@ -39,33 +40,48 @@ export function TodoInput({ onAdd, disabled }: TodoInputProps) {
         const value = e.target.value;
         setTitle(value);
 
-        // Limpiar error mientras escribe
         if (error && value.trim()) {
             setError('');
         }
     };
 
     return (
-        <div className="space-y-2">
-            <form onSubmit={handleSubmit} className="flex gap-2">
+        <div className="space-y-3 w-full animate-in fade-in duration-200">
+            <form onSubmit={handleSubmit} className="flex gap-3">
                 <div className="flex-1">
                     <Input
                         value={title}
                         onChange={handleChange}
-                        placeholder="¿Qué necesitas hacer?"
+                        placeholder="¿Qué necesitas hacer hoy?"
                         disabled={disabled}
                         maxLength={255}
-                        className={error ? 'border-destructive focus-visible:ring-destructive' : ''}
+                        className={cn(
+                            'h-12 px-5 text-base w-full shadow-sm transition-all focus-visible:ring-primary/20',
+                            error ? 'border-destructive focus-visible:ring-destructive/20' : 'border-border',
+                        )}
                     />
                 </div>
-                <Button type="submit" disabled={disabled || !title.trim()}>
-                    <Plus className="h-4 w-4" />
+
+                <Button type="submit" disabled={disabled || !title.trim()} className="size-12 px-6 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    <Plus className="h-5 w-5" />
                 </Button>
             </form>
 
-            {error && <p className="text-sm text-destructive animate-in fade-in slide-in-from-top-1">{error}</p>}
+            <div className="flex items-center justify-between px-1">
+                {error ? (
+                    <p className="text-sm text-destructive font-medium animate-in fade-in slide-in-from-left-1">{error}</p>
+                ) : (
+                    <p className="text-xs text-muted-foreground transition-opacity duration-300">
+                        Presiona{' '}
+                        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground italic">
+                            Enter
+                        </kbd>{' '}
+                        para añadir rápidamente
+                    </p>
+                )}
 
-            <p className="text-xs text-muted-foreground">{title.length}/255 caracteres</p>
+                <span className={cn('text-xs transition-colors', title.length > 240 ? 'text-warning' : 'text-muted-foreground/60')}>{title.length}/255</span>
+            </div>
         </div>
     );
 }

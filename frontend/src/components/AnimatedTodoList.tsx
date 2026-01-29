@@ -13,22 +13,25 @@ interface AnimatedTodoListProps {
 export function AnimatedTodoList({ todos, onToggle, onDelete, onUpdate }: AnimatedTodoListProps) {
     return (
         <AnimatePresence mode="popLayout">
-            <ScrollArea className="h-96 pr-6 py-2">
-                <div className="space-y-3 mb-0.5">
-                    {todos.map((todo, index) => (
+            <ScrollArea className="h-[calc(100vh-350px)] pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-1">
+                    {todos.map((todo) => (
                         <motion.div
                             key={todo.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, x: -100 }}
-                            transition={{ duration: 0.2, delay: index * 0.05 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
                             layout
+
+                            className="h-full"
                         >
                             <TodoItem todo={todo} onToggle={onToggle} onDelete={onDelete} onUpdate={onUpdate} />
                         </motion.div>
                     ))}
                 </div>
             </ScrollArea>
+
         </AnimatePresence>
     );
 }

@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import type { Todo, TodoStatus } from './services/api';
 import { todoApi } from './services/api';
 import { TodoInput } from './components/TodoInput';
-import { TodoFilters } from './components/TodoFilters';
-import { TodoSearch } from './components/TodoSearch';
 import { TodoSkeletonList } from './components/TodoSkeleton';
-import { Card } from './components/ui/card';
-import { CheckSquare, AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './components/ui/button';
 import { AnimatedTodoList } from './components/AnimatedTodoList';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from './components/ui/sidebar';
+import { AppSidebar } from './components/AppSidebar';
 
 function App() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -114,73 +113,87 @@ function App() {
     const completedTodosCount = todos.filter((todo) => todo.completed).length;
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-            <div className="container max-w-3xl mx-auto py-12 px-4">
-                {/* Header */}
-                <div className="text-center mb-8 animate-in fade-in slide-in-from-top duration-500">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                        <CheckSquare className="h-8 w-8 text-primary" />
-                        <h1 className="text-4xl font-bold">Todo App</h1>
-                    </div>
-                    <p className="text-muted-foreground">Organiza tus tareas de forma simple y efectiva</p>
-                </div>
+        <SidebarProvider>
+            <AppSidebar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                filter={filter}
+                onFilterChange={setFilter}
+                activeCount={activeTodosCount}
+                completedCount={completedTodosCount}
+                loading={loading}
+            />
+            <SidebarInset className="bg-background">
+                {/* Canvas Principal */}
+                <div className="flex flex-col h-full items-center">
+                    {/* Header para móvil/colapsado */}
+                    <header className="flex h-16 shrink-0 items-center justify-between px-4 w-full border-b md:border-transparent">
+                        <SidebarTrigger className="-ml-1" />
+                        <div className="md:hidden font-bold text-lg">Focuspan</div>
+                        <div className="w-9 h-9" /> {/* Spacer */}
+                    </header>
 
-                {/* Main Card */}
-                <Card className="p-6 space-y-6 animate-in fade-in slide-in-from-bottom duration-500 h-[80vh]">
-                    {/* Input */}
-                    <TodoInput onAdd={handleAddTodo} disabled={loading} />
-
-                    {/* Search */}
-                    <TodoSearch value={searchQuery} onChange={setSearchQuery} disabled={loading} />
-
-                    {/* Filters */}
-                    <TodoFilters currentFilter={filter} onFilterChange={setFilter} activeTodosCount={activeTodosCount} completedTodosCount={completedTodosCount} />
-
-                    {/* Error State con botón de retry */}
-                    {error && !loading && (
-                        <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md flex items-center justify-between animate-in fade-in slide-in-from-top">
-                            <div className="flex items-center gap-2">
-                                <AlertCircle className="h-5 w-5" />
-                                <span>{error}</span>
-                            </div>
-                            <Button variant="outline" size="sm" onClick={fetchTodos} className="ml-4">
-                                <RefreshCw className="h-4 w-4 mr-2" />
-                                Reintentar
-                            </Button>
-                        </div>
-                    )}
-
-                    {/* Loading Skeletons */}
-                    {loading && <TodoSkeletonList />}
-
-                    {/* Empty State */}
-                    {!loading && filteredTodos.length === 0 && (
-                        <div className="text-center py-12 text-muted-foreground animate-in fade-in zoom-in duration-300">
-                            <CheckSquare className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                            <p className="text-lg font-medium mb-2">{searchQuery ? 'No se encontraron tareas' : 'No hay tareas'}</p>
-                            <p className="text-sm">
-                                {searchQuery && `No hay resultados para "${searchQuery}"`}
-                                {!searchQuery && filter === 'active' && 'No tienes tareas pendientes'}
-                                {!searchQuery && filter === 'completed' && 'No has completado ninguna tarea'}
-                                {!searchQuery && filter === 'all' && 'Añade tu primera tarea para comenzar'}
+                    <main className="flex-1 w-full max-w-7xl p-6 md:px-12 space-y-8 animate-in fade-in duration-300 overflow-y-hidden">
+                        {/* Input Area */}
+                        <div className="space-y-4">
+                            <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl text-foreground">
+                                {filter === 'all' && 'Mis Tareas'}
+                                {filter === 'active' && 'Tareas Pendientes'}
+                                {filter === 'completed' && 'Tareas Completadas'}
+                            </h1>
+                            <p className="text-muted-foreground">
+                                {filter === 'all' && 'Gestiona tus actividades diarias con simplicidad.'}
+                                {filter === 'active' && `Tienes ${activeTodosCount} ${activeTodosCount === 1 ? 'tarea pendiente' : 'tareas pendientes'}.`}
+                                {filter === 'completed' && `Has completado ${completedTodosCount} ${completedTodosCount === 1 ? 'tarea' : 'tareas'}. ¡Buen trabajo!`}
                             </p>
+                            <TodoInput onAdd={handleAddTodo} disabled={loading} />
                         </div>
-                    )}
 
-                    {/* Todo List */}
-                    {!loading && filteredTodos.length > 0 && (
-                        <AnimatedTodoList todos={filteredTodos} onToggle={handleToggleTodo} onDelete={handleDeleteTodo} onUpdate={handleUpdateTodo} />
-                    )}
+                        {/* Error State */}
+                        {error && !loading && (
+                            <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md flex items-center justify-between animate-in fade-in slide-in-from-top">
+                                <div className="flex items-center gap-2">
+                                    <AlertCircle className="h-5 w-5" />
+                                    <span>{error}</span>
+                                </div>
+                                <Button variant="outline" size="sm" onClick={fetchTodos} className="ml-4">
+                                    <RefreshCw className="h-4 w-4 mr-2" />
+                                    Reintentar
+                                </Button>
+                            </div>
+                        )}
 
-                    {/* Search Results Count */}
-                    {!loading && searchQuery && filteredTodos.length > 0 && (
-                        <div className="text-center text-sm text-muted-foreground">
-                            Mostrando {filteredTodos.length} de {todos.length} {todos.length === 1 ? 'tarea' : 'tareas'}
+                        {/* List Area */}
+                        <div className="relative min-h-100">
+                            {loading && <TodoSkeletonList />}
+
+                            {!loading && filteredTodos.length === 0 && (
+                                <div className="text-center py-20 text-muted-foreground animate-in fade-in duration-300">
+                                    <ClipboardList className="h-16 w-16 mx-auto mb-4 opacity-20" />
+                                    <p className="text-xl font-medium mb-1">{searchQuery ? 'Sin coincidencias' : 'Todo despejado'}</p>
+                                    <p className="text-sm opacity-60">
+                                        {searchQuery && `No encontramos resultados para "${searchQuery}"`}
+                                        {!searchQuery && filter === 'active' && '¡Excelente! No tienes tareas pendientes.'}
+                                        {!searchQuery && filter === 'all' && 'Empieza añadiendo una tarea arriba.'}
+                                    </p>
+                                </div>
+                            )}
+
+                            {!loading && filteredTodos.length > 0 && (
+                                <div className="space-y-4">
+                                    {searchQuery && (
+                                        <p className="text-sm text-muted-foreground text-center mb-4">
+                                            Mostrando {filteredTodos.length} de {todos.length} {todos.length === 1 ? 'resultado' : 'resultados'}
+                                        </p>
+                                    )}
+                                    <AnimatedTodoList todos={filteredTodos} onToggle={handleToggleTodo} onDelete={handleDeleteTodo} onUpdate={handleUpdateTodo} />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </Card>
-            </div>
-        </div>
+                    </main>
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
     );
 }
 

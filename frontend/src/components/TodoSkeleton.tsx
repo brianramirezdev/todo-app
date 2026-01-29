@@ -3,13 +3,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function TodoSkeleton() {
     return (
-        <Card className="p-4">
-            <div className="flex items-center gap-3">
-                <Skeleton className="h-5 w-5 rounded" />
-                <Skeleton className="h-4 flex-1" />
-                <div className="flex gap-2">
-                    <Skeleton className="h-8 w-8 rounded" />
-                    <Skeleton className="h-8 w-8 rounded" />
+        <Card className="h-full border-muted/50 py-0">
+            <div className="p-5 flex flex-col h-full gap-4">
+                <div className="flex-1 min-w-0 space-y-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-muted/90">
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="h-5 w-5 rounded" />
+                    </div>
+                    <div className="flex gap-2">
+                        <Skeleton className="h-8 w-8 rounded-md" />
+                        <Skeleton className="h-8 w-8 rounded-md" />
+                    </div>
                 </div>
             </div>
         </Card>
@@ -18,8 +26,8 @@ export function TodoSkeleton() {
 
 export function TodoSkeletonList() {
     return (
-        <div className="space-y-2">
-            {[...Array(3)].map((_, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
                 <TodoSkeleton key={i} />
             ))}
         </div>

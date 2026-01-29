@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
             <App />
-            <Toaster position="top-right" richColors />
+            <Toaster position="top-right" richColors={false} />
         </ThemeProvider>
     </StrictMode>,
 );
