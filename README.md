@@ -34,8 +34,21 @@ Este proyecto es una aplicación de gestión de tareas (TODO) de nivel profesion
 - ✅ **Frontend**: Interfaz de usuario moderna con React y Tailwind v4.
 - ✅ **Dockerización**: Pipeline completo para desarrollo y despliegue local.
 - ✅ **Base de Datos**: Gestión automatizada con TypeORM Migrations.
+- ✅ **Personalización**: Sistema multi-tema con 5 paletas de colores y modo oscuro/claro.
 
 ---
+
+## ✨ Características Destacadas
+
+### 🎨 Sistema Multi-Tema
+La aplicación incluye un sistema de personalización avanzado que permite cambiar la estética global instantáneamente:
+- **5 Paletas de Colores**: Indigo (Clásico), Moss (Naturaleza), Charcoal (Minimalista), Punchy (Vibrante) y Queater (Cálido).
+- **Modos Adaptativos**: Cada tema está optimizado tanto para Modo Claro como para Modo Oscuro.
+- **Persistencia**: La elección del tema y modo se guarda localmente en el navegador.
+
+### ⚡ Rendimiento Optimizado
+- **Carga Inteligente**: Filtrado y búsqueda realizados en cliente para respuestas instantáneas.
+- **Estados Optimistas**: La UI se actualiza antes de que el servidor confirme la operación, eliminando la sensación de latencia.
 
 ## 🏗 Arquitectura del Sistema
 

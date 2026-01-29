@@ -88,7 +88,14 @@ Disponible en `http://localhost:80`.
 
 ## ✨ Características Especiales
 
+- **Sistema Multi-Tema (Paletas)**: Soporte para 5 temas dinámicos:
+  - **Indigo**: El clásico balanceado.
+  - **Moss**: Tonos verdes naturales y relajantes.
+  - **Charcoal**: Minimalismo puro en blanco y negro "ink-like".
+  - **Punchy**: Colores vibrantes y enérgicos de alto contraste.
+  - **Queater**: Inspirado en tonos crema y naranja cálidos.
+- **DarkMode Nativo**: Todos los temas anteriores cuentan con su propia versión optimizada para modo oscuro.
 - **Optimistic Updates**: Los cambios en el estado de las tareas se reflejan instantáneamente en la UI antes de confirmarse en el servidor.
-- **Responsive Design**: Totalmente adaptado a móviles y tablets.
-- **Skeletons**: Indicadores de carga para una mejor percepción de velocidad.
-- **Sonner Notifications**: Feedback visual elegante para cada acción.
+- **Responsive Design**: Layout moderno con Sidebar colapsable adaptado a móviles y tablets.
+- **Skeletons**: Indicadores de carga coordinados con el diseño de las tarjetas para una carga visual fluida.
+- **Sonner Notifications**: Feedback visual elegante y no intrusivo.
