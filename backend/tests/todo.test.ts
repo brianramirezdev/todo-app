@@ -60,19 +60,32 @@ describe('Todo API Tests', () => {
     });
 
     describe('GET /api/todos', () => {
-        it('debería devolver un array vacío cuando no hay todos', async () => {
+        it('debería devolver un objeto con data vacía cuando no hay todos', async () => {
             const response = await request(app).get('/api/todos').expect(200);
 
-            expect(response.body).toEqual([]);
+            expect(response.body.data).toEqual([]);
+            expect(response.body.meta.total).toBe(0);
         });
 
-        it('debería devolver todos los todos', async () => {
+        it('debería devolver todos los todos paginados', async () => {
             await request(app).post('/api/todos').send({ title: 'Todo 1' });
             await request(app).post('/api/todos').send({ title: 'Todo 2' });
 
             const response = await request(app).get('/api/todos').expect(200);
 
-            expect(response.body.length).toBe(2);
+            expect(response.body.data.length).toBe(2);
+            expect(response.body.meta.total).toBe(2);
+        });
+
+        it('debería respetar el límite de paginación', async () => {
+            await request(app).post('/api/todos').send({ title: 'Todo 1' });
+            await request(app).post('/api/todos').send({ title: 'Todo 2' });
+
+            const response = await request(app).get('/api/todos?limit=1').expect(200);
+
+            expect(response.body.data.length).toBe(1);
+            expect(response.body.meta.total).toBe(2);
+            expect(response.body.meta.totalPages).toBe(2);
         });
     });
 
@@ -93,7 +106,8 @@ describe('Todo API Tests', () => {
             await request(app).delete(`/api/todos/${create.body.id}`).expect(204);
 
             const response = await request(app).get('/api/todos');
-            expect(response.body).toEqual([]);
+            expect(response.body.data).toEqual([]);
         });
     });
+
 });

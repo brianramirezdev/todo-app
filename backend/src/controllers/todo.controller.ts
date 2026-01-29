@@ -3,23 +3,63 @@ import { Repository } from 'typeorm';
 import { Todo } from '@entities/Todo';
 
 export class TodoController {
-    // GET /api/todos?status=all|active|completed
+    // GET /api/todos?status=all|active|completed&page=1&limit=10&sortBy=createdAt&sortOrder=DESC&search=...
     static async getAllTodos(req: Request, res: Response) {
         try {
             const todoRepository = req.app.locals.todoRepository as Repository<Todo>;
-            const { status } = req.query;
 
-            let todos: Todo[];
+            // Extract query parameters with defaults
+            const status = req.query.status as string || 'all';
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            const sortBy = (req.query.sortBy as string) || 'createdAt';
+            const sortOrder = (req.query.sortOrder as string)?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+            const search = req.query.search as string || '';
 
+            const queryBuilder = todoRepository.createQueryBuilder('todo');
+
+            // Filter by status
             if (status === 'active') {
-                todos = await todoRepository.find({ where: { completed: false } });
+                queryBuilder.andWhere('todo.completed = :completed', { completed: false });
             } else if (status === 'completed') {
-                todos = await todoRepository.find({ where: { completed: true } });
-            } else {
-                todos = await todoRepository.find();
+                queryBuilder.andWhere('todo.completed = :completed', { completed: true });
             }
 
-            res.json(todos);
+            // Filter by search term
+            if (search.trim()) {
+                queryBuilder.andWhere('LOWER(todo.title) LIKE LOWER(:search)', { search: `%${search.trim()}%` });
+            }
+
+            // Sorting
+            queryBuilder.orderBy(`todo.${sortBy}`, sortOrder);
+
+            // Pagination
+            const skip = (page - 1) * limit;
+            queryBuilder.skip(skip).take(limit);
+
+            const [todos, total] = await queryBuilder.getManyAndCount();
+
+            // Additional counts for the sidebar (efficiently)
+            const [activeTotal, completedTotal] = await Promise.all([
+                todoRepository.count({ where: { completed: false } }),
+                todoRepository.count({ where: { completed: true } }),
+            ]);
+
+            res.json({
+                data: todos,
+                meta: {
+                    total,
+                    page,
+                    limit,
+                    totalPages: Math.ceil(total / limit),
+                    counts: {
+                        all: activeTotal + completedTotal,
+                        active: activeTotal,
+                        completed: completedTotal,
+                    }
+                }
+            });
+
         } catch (error) {
             console.error('Error fetching todos:', error);
             res.status(500).json({
@@ -28,6 +68,7 @@ export class TodoController {
             });
         }
     }
+
 
     // POST /api/todos
     static async createTodo(req: Request, res: Response) {

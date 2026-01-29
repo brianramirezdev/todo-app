@@ -20,11 +20,38 @@ export interface Todo {
 
 export type TodoStatus = 'all' | 'active' | 'completed';
 
+export interface PaginationParams {
+    status?: TodoStatus;
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: 'ASC' | 'DESC';
+    search?: string;
+}
+
+export interface PaginatedTodoResponse {
+    data: Todo[];
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+        counts: {
+            all: number;
+            active: number;
+            completed: number;
+        };
+    };
+}
+
+
 export const todoApi = {
-    // GET /api/todos?status=all|active|completed
-    getTodos: async (status: TodoStatus = 'all'): Promise<Todo[]> => {
-        // await delay(1500); // Simula 1.5 segundos de carga
-        const response = await api.get<Todo[]>(`/todos?status=${status}`);
+    // GET /api/todos
+    getTodos: async (params: PaginationParams = {}): Promise<PaginatedTodoResponse> => {
+        const { status = 'all', page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'DESC', search = '' } = params;
+        const response = await api.get<PaginatedTodoResponse>(`/todos`, {
+            params: { status, page, limit, sortBy, sortOrder, search }
+        });
         return response.data;
     },
 

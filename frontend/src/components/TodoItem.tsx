@@ -42,8 +42,8 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
 
     return (
         <>
-            <Card className="h-full group transition-all hover:shadow-lg animate-in fade-in duration-200 border-muted/50 hover:border-primary/20 py-0">
-                <div className="p-5 flex flex-col h-full gap-4">
+            <Card className="group transition-all hover:shadow-lg animate-in fade-in duration-200 border-muted/50 hover:border-primary/20 py-0 min-h-[140px] flex flex-col">
+                <div className="p-4 flex flex-col h-full gap-3">
                     <div className="flex-1 min-w-0">
                         {isEditing ? (
                             <Input
@@ -68,7 +68,7 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
                         )}
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-muted/90">
+                    <div className="flex items-center justify-between pt-3 border-t border-muted/90">
                         <div className="flex items-center gap-1">
                             <Checkbox
                                 id={`todo-${todo.id}`}
