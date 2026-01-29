@@ -1,12 +1,4 @@
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 interface TodoPaginationProps {
     currentPage: number;
@@ -20,11 +12,7 @@ export function TodoPagination({ currentPage, totalPages, onPageChange }: TodoPa
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     // Logic to show a subset of pages if there are too many
-    const visiblePages = pages.filter(p =>
-        p === 1 ||
-        p === totalPages ||
-        (p >= currentPage - 1 && p <= currentPage + 1)
-    );
+    const visiblePages = pages.filter((p) => p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1));
 
     const renderPages = () => {
         const items = [];
@@ -35,19 +23,15 @@ export function TodoPagination({ currentPage, totalPages, onPageChange }: TodoPa
                 items.push(
                     <PaginationItem key={`ellipsis-${page}`}>
                         <PaginationEllipsis />
-                    </PaginationItem>
+                    </PaginationItem>,
                 );
             }
             items.push(
                 <PaginationItem key={page}>
-                    <PaginationLink
-                        onClick={() => onPageChange(page)}
-                        isActive={currentPage === page}
-                        className="cursor-pointer"
-                    >
+                    <PaginationLink onClick={() => onPageChange(page)} isActive={currentPage === page} className="cursor-pointer">
                         {page}
                     </PaginationLink>
-                </PaginationItem>
+                </PaginationItem>,
             );
             lastPage = page;
         }
@@ -60,7 +44,8 @@ export function TodoPagination({ currentPage, totalPages, onPageChange }: TodoPa
                 <PaginationItem>
                     <PaginationPrevious
                         onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
-                        className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        title="anterior"
+                        className={currentPage <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                     />
                 </PaginationItem>
 
@@ -69,7 +54,8 @@ export function TodoPagination({ currentPage, totalPages, onPageChange }: TodoPa
                 <PaginationItem>
                     <PaginationNext
                         onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-                        className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        title="siguiente"
+                        className={currentPage >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                     />
                 </PaginationItem>
             </PaginationContent>
