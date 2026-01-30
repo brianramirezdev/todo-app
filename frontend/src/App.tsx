@@ -11,6 +11,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from './components/ui/s
 import { AppSidebar } from './components/AppSidebar';
 import { TodoPagination } from './components/TodoPagination';
 import { ScrollArea } from './components/ui/scroll-area';
+import { DevOverlay } from './components/DevOverlay';
 
 function App() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -25,6 +26,21 @@ function App() {
     const [sortBy] = useState('createdAt');
     const [sortOrder] = useState<'ASC' | 'DESC'>('DESC');
     const [metadata, setMetadata] = useState<PaginatedTodoResponse['meta'] | null>(null);
+
+    // Development Mode State
+    const [isDevMode, setIsDevMode] = useState(() => {
+        return localStorage.getItem('dev_mode') === 'true';
+    });
+
+    const toggleDevMode = (enabled: boolean) => {
+        setIsDevMode(enabled);
+        localStorage.setItem('dev_mode', String(enabled));
+        if (enabled) {
+            toast.info('Modo Desarrollo activado', {
+                description: 'Ahora tienes acceso a herramientas técnicas.'
+            });
+        }
+    };
 
     // Cargar todos (Server-side)
     const fetchTodos = useCallback(async () => {
@@ -157,8 +173,11 @@ function App() {
                 activeCount={counts.active}
                 completedCount={counts.completed}
                 loading={loading && todos.length === 0}
+                isDevMode={isDevMode}
+                onDevModeChange={toggleDevMode}
             />
             <SidebarInset className="flex flex-col h-screen overflow-hidden bg-background">
+                {isDevMode && <DevOverlay onActionComplete={fetchTodos} />}
                 <div className="flex-1 min-h-0 flex flex-col w-full items-center">
                     <header className="flex h-16 shrink-0 items-center justify-between px-4 w-full border-b md:border-transparent sticky top-0 bg-background/80 backdrop-blur-md z-10">
                         <SidebarTrigger className="-ml-1" />
@@ -166,7 +185,7 @@ function App() {
                         <div className="w-9 h-9" />
                     </header>
 
-                    <main className="flex-1 min-h-0 flex flex-col w-full p-4 max-w-7xl md:px-8 space-y-6 animate-in fade-in duration-700 overflow-hidden">
+                    <main className="flex-1 min-h-0 flex flex-col w-full px-4 max-w-7xl md:px-8 space-y-6 animate-in fade-in duration-700 overflow-hidden">
                         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
                             <div className="space-y-1">
                                 <h1 className="text-2xl font-bold tracking-tight text-foreground/90">

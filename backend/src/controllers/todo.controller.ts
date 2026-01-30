@@ -199,7 +199,7 @@ export class TodoController {
     static async deleteAllTodos(req: Request, res: Response) {
         try {
             const todoRepository = req.app.locals.todoRepository as Repository<Todo>;
-            await todoRepository.delete({});
+            await todoRepository.createQueryBuilder().delete().execute();
 
             res.json({
                 message: 'All todos deleted successfully',
@@ -210,6 +210,66 @@ export class TodoController {
             res.status(500).json({
                 error: 'Internal server error',
                 message: 'Failed to delete todos',
+            });
+        }
+    }
+
+    // POST /api/todos/seed (sembrar datos de ejemplo)
+    static async seedTasks(req: Request, res: Response) {
+        try {
+            const todoRepository = req.app.locals.todoRepository as Repository<Todo>;
+
+            const seedData = [
+                { title: 'Revisar logs de producción', type: 'task', completed: true },
+                { title: 'Comprar café para el equipo', type: 'task', completed: false },
+                { title: 'Idea: Refactorizar el motor de filtrado', type: 'note', completed: false },
+                { title: 'Pagar suscripción de Copilot', type: 'task', completed: true },
+                { title: 'Configurar variables de entorno en Staging', type: 'task', completed: false },
+                { title: 'Recordatorio: Dentista mañana 10am', type: 'note', completed: false },
+                { title: 'Optimizar queries de TypeORM', type: 'task', completed: true },
+                { title: 'Actualizar README con guía de despliegue', type: 'task', completed: false },
+                { title: 'Feedback de la última reunión de diseño', type: 'note', completed: false },
+                { title: 'Investigar integración con Stripe', type: 'task', completed: false },
+                { title: 'Fix bug: padding en modo móvil', type: 'task', completed: true },
+                { title: 'Borrador: Roadmap Q1 2026', type: 'note', completed: false },
+                { title: 'Llamar a soporte técnico de AWS', type: 'task', completed: false },
+                { title: 'Revisar PR de autenticación', type: 'task', completed: true },
+                { title: 'Nota mental: Usar glassmorphism en el sidebar', type: 'note', completed: false },
+                { title: 'Preparar demo para el cliente', type: 'task', completed: false },
+                { title: 'Instalar dependencias de testing', type: 'task', completed: true },
+                { title: 'Definir paleta de colores "Charcoal"', type: 'note', completed: true },
+                { title: 'Validar accesibilidad de los inputs', type: 'task', completed: false },
+                { title: 'Comprar monitor ultrapanorámico', type: 'task', completed: false },
+                { title: 'Lista de la compra semanal', type: 'note', completed: false },
+                { title: 'Refinar animaciones de Framer Motion', type: 'task', completed: false }
+            ];
+
+            const todos = seedData.map((data, index) => {
+                const date = new Date();
+                // Simular fechas pasadas para scanability temporal
+                if (index % 3 === 0) date.setDate(date.getDate() - 1); // Ayer
+                if (index % 5 === 0) date.setDate(date.getDate() - 12); // Hace 5 días
+
+                return todoRepository.create({
+                    ...data,
+                    type: data.type as 'task' | 'note',
+                    createdAt: date.toISOString(),
+                    updatedAt: date.toISOString()
+                });
+            });
+
+            const savedTodos = await todoRepository.save(todos);
+
+            res.status(201).json({
+                message: 'Database seeded successfully',
+                count: savedTodos.length,
+                data: savedTodos
+            });
+        } catch (error) {
+            console.error('Error seeding todos:', error);
+            res.status(500).json({
+                error: 'Internal server error',
+                message: 'Failed to seed todos'
             });
         }
     }

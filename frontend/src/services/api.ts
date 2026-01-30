@@ -75,4 +75,14 @@ export const todoApi = {
         // await delay(500);
         await api.delete(`/todos/${id}`);
     },
+
+    // DELETE /api/todos (borrar todos)
+    deleteAllTodos: async (): Promise<void> => {
+        await api.delete('/todos');
+    },
+
+    // POST /api/todos/seed (datos de ejemplo)
+    seedTodos: async (): Promise<void> => {
+        await api.post('/todos/seed');
+    },
 };

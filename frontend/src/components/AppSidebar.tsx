@@ -10,11 +10,20 @@ import {
     SidebarGroupLabel,
     SidebarGroupContent,
 } from '@/components/ui/sidebar';
-import { Search, CheckCircle2, Circle, StickyNote, Tag, Calendar, LayoutGrid } from 'lucide-react';
+import { Search, CheckCircle2, Circle, StickyNote, Tag, Calendar, LayoutGrid, Settings } from 'lucide-react';
 import { ModeToggle } from './theme/ModeToggle';
 import { PaletteToggle } from './theme/PaletteToggle';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import type { TodoStatus } from '@/services/api';
 
 interface AppSidebarProps {
@@ -25,9 +34,21 @@ interface AppSidebarProps {
     activeCount: number;
     completedCount: number;
     loading: boolean;
+    isDevMode: boolean;
+    onDevModeChange: (enabled: boolean) => void;
 }
 
-export function AppSidebar({ searchQuery, onSearchChange, filter, onFilterChange, activeCount, completedCount, loading }: AppSidebarProps) {
+export function AppSidebar({
+    searchQuery,
+    onSearchChange,
+    filter,
+    onFilterChange,
+    activeCount,
+    completedCount,
+    loading,
+    isDevMode,
+    onDevModeChange
+}: AppSidebarProps) {
     return (
         <Sidebar>
             <SidebarHeader className="p-4">
@@ -112,9 +133,31 @@ export function AppSidebar({ searchQuery, onSearchChange, filter, onFilterChange
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="p-4 border-t border-border">
+            <SidebarFooter className="p-4 border-t border-border gap-4">
                 <div className="flex items-center justify-between px-2">
-                    <span className="text-sm text-muted-foreground font-medium">Tema</span>
+                    <span className="text-sm text-muted-foreground font-medium">Configuración</span>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Settings className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56">
+                            <DropdownMenuLabel>Ajustes de Sistema</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <div className="flex items-center justify-between p-2">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-sm font-medium">Modo Desarrollo</span>
+                                    <span className="text-[10px] text-muted-foreground">Herramientas técnicas</span>
+                                </div>
+                                <Switch checked={isDevMode} onCheckedChange={onDevModeChange} />
+                            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+
+                <div className="flex items-center justify-between px-2 pt-2 border-t border-border/50">
+                    <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Aspecto</span>
                     <div className="flex items-center gap-2">
                         <PaletteToggle />
                         <ModeToggle />

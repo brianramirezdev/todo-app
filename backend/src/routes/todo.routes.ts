@@ -18,4 +18,7 @@ router.delete('/:id', TodoController.deleteTodo);
 // DELETE /api/todos
 router.delete('/', TodoController.deleteAllTodos);
 
+// POST /api/todos/seed
+router.post('/seed', TodoController.seedTasks);
+
 export default router;
