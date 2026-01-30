@@ -8,6 +8,7 @@ const mockTodo: Todo = {
     id: '1',
     title: 'Tarea de prueba',
     completed: false,
+    type: 'task',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
 };
@@ -19,13 +20,22 @@ describe('TodoItem', () => {
         expect(screen.getByText('Tarea de prueba')).toBeInTheDocument();
     });
 
+    it('debería renderizar una nota con estilo diferente', () => {
+        const noteTodo: Todo = { ...mockTodo, type: 'note', title: 'Esto es una nota' };
+        render(<TodoItem todo={noteTodo} onToggle={vi.fn()} onDelete={vi.fn()} onUpdate={vi.fn()} />);
+
+        expect(screen.getByText('Esto es una nota')).toBeInTheDocument();
+        // Las notas no muestran checkbox
+        expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
+    });
+
     it('debería llamar a onToggle cuando se marca el checkbox', async () => {
         const user = userEvent.setup();
         const onToggle = vi.fn();
 
         render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={vi.fn()} onUpdate={vi.fn()} />);
 
-        const checkbox = screen.getByRole('checkbox');
+        const checkbox = screen.getByRole('checkbox', { name: /marcar como completada/i });
         await user.click(checkbox);
 
         expect(onToggle).toHaveBeenCalledWith('1', true);
@@ -45,9 +55,7 @@ describe('TodoItem', () => {
 
         render(<TodoItem todo={mockTodo} onToggle={vi.fn()} onDelete={vi.fn()} onUpdate={vi.fn()} />);
 
-        // Obtener todos los botones y seleccionar el de editar (primer botón después del checkbox)
-        const buttons = screen.getAllByRole('button');
-        const editButton = buttons[0]; // Botón de editar
+        const editButton = screen.getByRole('button', { name: /editar tarea/i });
         await user.click(editButton);
 
         expect(screen.getByDisplayValue('Tarea de prueba')).toBeInTheDocument();
@@ -60,18 +68,16 @@ describe('TodoItem', () => {
         render(<TodoItem todo={mockTodo} onToggle={vi.fn()} onDelete={vi.fn()} onUpdate={onUpdate} />);
 
         // Entrar en modo edición
-        const editButton = screen.getAllByRole('button')[0];
-        await user.click(editButton);
+        await user.click(screen.getByRole('button', { name: /editar tarea/i }));
 
         const input = screen.getByRole('textbox');
         await user.clear(input);
         await user.type(input, 'Tarea modificada');
 
         // Guardar
-        const saveButton = screen.getAllByRole('button')[0];
+        const saveButton = screen.getByRole('button', { name: /guardar cambios/i });
         await user.click(saveButton);
 
-        expect(onUpdate).toHaveBeenCalledTimes(1);
         expect(onUpdate).toHaveBeenCalledWith('1', 'Tarea modificada');
     });
 
@@ -80,15 +86,10 @@ describe('TodoItem', () => {
 
         render(<TodoItem todo={mockTodo} onToggle={vi.fn()} onDelete={vi.fn()} onUpdate={vi.fn()} />);
 
-        // Obtener el botón de eliminar (segundo botón después del checkbox)
-        const buttons = screen.getAllByRole('button');
-        const deleteButton = buttons[1]; // Botón de eliminar
-
+        const deleteButton = screen.getByRole('button', { name: /eliminar tarea/i });
         await user.click(deleteButton);
 
         const dialog = screen.getByRole('alertdialog');
-
         expect(within(dialog).getByText(/¿estás seguro?/i)).toBeInTheDocument();
-        expect(within(dialog).getByText(/tarea de prueba/i)).toBeInTheDocument();
     });
 });

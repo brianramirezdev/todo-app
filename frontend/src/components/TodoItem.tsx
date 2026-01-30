@@ -59,6 +59,7 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
                                     variant="ghost"
                                     onClick={() => setIsEditing(true)}
                                     disabled={todo.completed && !isNote}
+                                    aria-label="Editar tarea"
                                     className={cn(
                                         'h-6 w-6 text-muted-foreground transition-colors',
                                         isNote ? 'hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10' : 'hover:text-primary hover:bg-primary/10',
@@ -70,6 +71,7 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
                                     size="icon"
                                     variant="ghost"
                                     onClick={() => setShowDeleteDialog(true)}
+                                    aria-label="Eliminar tarea"
                                     className="h-6 w-6 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                                 >
                                     <Trash2 className="h-3 w-3" />
@@ -148,7 +150,7 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
                             <Button size="sm" variant="ghost" onClick={handleCancel} className="h-7 text-xs leading-none">
                                 Cancelar
                             </Button>
-                            <Button size="sm" onClick={handleSave} className="h-7 text-xs px-3 leading-none">
+                            <Button size="sm" onClick={handleSave} aria-label="Guardar cambios" className="h-7 text-xs px-3 leading-none">
                                 <Check className="h-3 w-3" />
                             </Button>
                         </div>

@@ -40,7 +40,7 @@ export function DevOverlay({ onActionComplete }: DevOverlayProps) {
     };
 
     return (
-        <div className="fixed top-4 right-4 z-[100] animate-in fade-in slide-in-from-right-4 duration-500">
+        <div className="fixed top-4 right-4 z-100 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl overflow-hidden p-1 flex items-center gap-1 group">
                 <div className="px-3 py-1 flex items-center gap-2 border-r border-zinc-800">
                     <div className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
