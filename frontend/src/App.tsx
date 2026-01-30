@@ -10,6 +10,7 @@ import { AnimatedTodoList } from './components/AnimatedTodoList';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from './components/ui/sidebar';
 import { AppSidebar } from './components/AppSidebar';
 import { TodoPagination } from './components/TodoPagination';
+import { ScrollArea } from './components/ui/scroll-area';
 
 function App() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -36,7 +37,7 @@ function App() {
                 limit,
                 sortBy,
                 sortOrder,
-                search: searchQuery
+                search: searchQuery,
             });
 
             setTodos(response.data);
@@ -61,12 +62,25 @@ function App() {
     }, [filter, searchQuery]);
 
     // Crear todo
-    const handleAddTodo = async (title: string) => {
+    const handleAddTodo = async (title: string, type: 'task' | 'note') => {
+        const optimisticTodo: Todo = {
+            id: Date.now().toString(), // Temporary ID for optimistic update
+            title,
+            completed: false,
+            type,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        };
+
+        setTodos((prev) => [optimisticTodo, ...prev]);
+
         try {
-            await todoApi.createTodo(title);
+            const newTodo = await todoApi.createTodo(title, type);
+            setTodos((prev) => prev.map((todo) => (todo.id === optimisticTodo.id ? newTodo : todo)));
             fetchTodos(); // Recargar para mantener orden y paginación consistentes
             toast.success('Tarea creada correctamente');
         } catch (err) {
+            setTodos((prev) => prev.filter((todo) => todo.id !== optimisticTodo.id)); // Revert optimistic update
             toast.error('Error al crear la tarea');
             console.error(err);
         }
@@ -144,27 +158,31 @@ function App() {
                 completedCount={counts.completed}
                 loading={loading && todos.length === 0}
             />
-            <SidebarInset className="flex flex-col min-h-screen bg-background">
-                <div className="flex flex-col w-full items-center">
+            <SidebarInset className="flex flex-col h-screen overflow-hidden bg-background">
+                <div className="flex-1 min-h-0 flex flex-col w-full items-center">
                     <header className="flex h-16 shrink-0 items-center justify-between px-4 w-full border-b md:border-transparent sticky top-0 bg-background/80 backdrop-blur-md z-10">
                         <SidebarTrigger className="-ml-1" />
                         <div className="md:hidden font-bold text-lg">Focuspan</div>
                         <div className="w-9 h-9" />
                     </header>
 
-                    <main className="w-full max-w-7xl p-6 md:px-12 space-y-8 animate-in fade-in duration-300">
-                        <div className="space-y-4">
-                            <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl text-foreground">
-                                {filter === 'all' && 'Mis Tareas'}
-                                {filter === 'active' && 'Tareas Pendientes'}
-                                {filter === 'completed' && 'Tareas Completadas'}
-                            </h1>
-                            <p className="text-muted-foreground">
-                                {filter === 'all' && 'Gestiona tus actividades diarias con simplicidad.'}
-                                {filter === 'active' && `Tienes ${counts.active} ${counts.active === 1 ? 'tarea pendiente' : 'tareas pendientes'}.`}
-                                {filter === 'completed' && `Has completado ${counts.completed} ${counts.completed === 1 ? 'tarea' : 'tareas'}. ¡Buen trabajo!`}
-                            </p>
-                            <TodoInput onAdd={handleAddTodo} disabled={loading} />
+                    <main className="flex-1 min-h-0 flex flex-col w-full p-4 max-w-7xl md:px-8 space-y-6 animate-in fade-in duration-700 overflow-hidden">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+                            <div className="space-y-1">
+                                <h1 className="text-2xl font-bold tracking-tight text-foreground/90">
+                                    {filter === 'all' && 'Mis Tareas'}
+                                    {filter === 'active' && 'Tareas Pendientes'}
+                                    {filter === 'completed' && 'Tareas Completadas'}
+                                </h1>
+                                <p className="text-sm text-muted-foreground/70">
+                                    {filter === 'all' && 'Gestiona tus actividades con calma.'}
+                                    {filter === 'active' && `Tienes ${counts.active} ${counts.active === 1 ? 'pendiente' : 'pendientes'}.`}
+                                    {filter === 'completed' && `Has completado ${counts.completed} ${counts.completed === 1 ? 'tarea' : 'tareas'}.`}
+                                </p>
+                            </div>
+                            <div className="w-full md:w-96">
+                                <TodoInput onAdd={handleAddTodo} disabled={loading} />
+                            </div>
                         </div>
 
                         {error && !loading && (
@@ -180,15 +198,14 @@ function App() {
                             </div>
                         )}
 
-                        <div className="relative min-h-[300px]">
+                        <div className="flex-1 flex flex-col min-h-0">
                             {loading && todos.length === 0 && <TodoSkeletonList />}
 
-
                             {!loading && todos.length === 0 && (
-                                <div className="text-center py-20 text-muted-foreground animate-in fade-in duration-300">
+                                <div className="text-center py-20 text-muted-foreground animate-in fade-in duration-300 flex-1 flex flex-col items-center justify-center">
                                     <ClipboardList className="h-16 w-16 mx-auto mb-4 opacity-20" />
                                     <p className="text-xl font-medium mb-1">{searchQuery ? 'Sin coincidencias' : 'Todo despejado'}</p>
-                                    <p className="text-sm opacity-60">
+                                    <p className="text-sm opacity-60 text-center">
                                         {searchQuery && `No encontramos resultados para "${searchQuery}"`}
                                         {!searchQuery && filter === 'active' && '¡Excelente! No tienes tareas pendientes.'}
                                         {!searchQuery && filter === 'all' && 'Empieza añadiendo una tarea arriba.'}
@@ -197,28 +214,17 @@ function App() {
                             )}
 
                             {todos.length > 0 && (
-                                <div className="space-y-8">
-                                    {searchQuery && metadata && (
-                                        <p className="text-sm text-muted-foreground text-center mb-4">
-                                            Mostrando {todos.length} de {metadata.total} {metadata.total === 1 ? 'resultado' : 'resultados'}
-                                        </p>
-                                    )}
-                                    <AnimatedTodoList
-                                        todos={todos}
-                                        onToggle={handleToggleTodo}
-                                        onDelete={handleDeleteTodo}
-                                        onUpdate={handleUpdateTodo}
-                                    />
-
-                                    {metadata && metadata.totalPages > 1 && (
-                                        <div className="pt-4 border-t">
-                                            <TodoPagination
-                                                currentPage={page}
-                                                totalPages={metadata.totalPages}
-                                                onPageChange={setPage}
-                                            />
+                                <div className="flex flex-col flex-1 min-h-0">
+                                    {/* Top Control Bar: Pagination & Metadata */}
+                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pt-2">
+                                        <div className="flex items-center gap-4">
+                                            {metadata && metadata.totalPages > 1 && <TodoPagination currentPage={page} totalPages={metadata.totalPages} onPageChange={setPage} />}
                                         </div>
-                                    )}
+                                    </div>
+
+                                    <ScrollArea className="flex-1 h-full min-h-0 pr-4 -mr-4">
+                                        <AnimatedTodoList todos={todos} onToggle={handleToggleTodo} onDelete={handleDeleteTodo} onUpdate={handleUpdateTodo} />
+                                    </ScrollArea>
                                 </div>
                             )}
                         </div>

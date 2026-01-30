@@ -14,6 +14,7 @@ export interface Todo {
     id: string;
     title: string;
     completed: boolean;
+    type: 'task' | 'note';
     createdAt: string;
     updatedAt: string;
 }
@@ -56,9 +57,9 @@ export const todoApi = {
     },
 
     // POST /api/todos
-    createTodo: async (title: string): Promise<Todo> => {
+    createTodo: async (title: string, type: 'task' | 'note' = 'task'): Promise<Todo> => {
         // await delay(800);
-        const response = await api.post<Todo>('/todos', { title });
+        const response = await api.post<Todo>('/todos', { title, type });
         return response.data;
     },
 

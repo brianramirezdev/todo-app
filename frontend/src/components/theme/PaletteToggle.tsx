@@ -27,23 +27,16 @@ export function PaletteToggle() {
                 <DropdownMenuLabel className="text-xs font-semibold opacity-60">Temas de Color</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <div className="flex flex-col gap-1">
-
-                {palettes.map((p) => (
-                    <DropdownMenuItem
-                        key={p.id}
-                        onClick={() => setPalette(p.id)}
-                        className={cn(
-                            "flex items-center gap-2 cursor-pointer",
-                            palette === p.id && "bg-accent text-accent-foreground font-medium"
-                        )}
-                    >
-                        <div className={cn("h-3 w-3 rounded-full border border-black/10", p.color)} />
-                        <span>{p.name}</span>
-                        {palette === p.id && (
-                            <div className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
-                        )}
-                    </DropdownMenuItem>
-                ))}
+                    {palettes.map((p) => (
+                        <DropdownMenuItem
+                            key={p.id}
+                            onClick={() => setPalette(p.id)}
+                            className={cn('flex items-center gap-2 cursor-pointer', palette === p.id && 'bg-accent text-accent-foreground font-medium')}
+                        >
+                            <div className={cn('h-3 w-3 rounded-full border border-black/10', p.color)} />
+                            <span>{p.name}</span>
+                        </DropdownMenuItem>
+                    ))}
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>

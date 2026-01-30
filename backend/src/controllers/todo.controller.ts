@@ -74,7 +74,7 @@ export class TodoController {
     static async createTodo(req: Request, res: Response) {
         try {
             const todoRepository = req.app.locals.todoRepository as Repository<Todo>;
-            const { title } = req.body;
+            const { title, type = 'task' } = req.body;
 
             // Validación
             if (!title || title.trim() === '') {
@@ -95,6 +95,7 @@ export class TodoController {
             const todo = todoRepository.create({
                 title: title.trim(),
                 completed: false,
+                type: type as 'task' | 'note',
             });
 
             const savedTodo = await todoRepository.save(todo);

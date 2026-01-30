@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.NODE_ENV === 'test' ? process.env.DB_NAME || 'todo_app_test' : process.env.DB_NAME || 'todo_app',
-    synchronize: process.env.NODE_ENV === 'test',
+    synchronize: true,
     dropSchema: process.env.NODE_ENV === 'test',
     logging: process.env.NODE_ENV === 'development',
     entities: [Todo],

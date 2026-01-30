@@ -11,6 +11,13 @@ export class Todo {
     @Column({ type: 'boolean', default: false })
     completed: boolean;
 
+    @Column({
+        type: 'varchar',
+        length: 20,
+        default: 'task',
+    })
+    type: 'task' | 'note';
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

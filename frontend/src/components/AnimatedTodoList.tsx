@@ -13,17 +13,9 @@ interface AnimatedTodoListProps {
 export function AnimatedTodoList({ todos, onToggle, onDelete, onUpdate }: AnimatedTodoListProps) {
     return (
         <AnimatePresence mode="popLayout">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-1">
                 {todos.map((todo) => (
-                    <motion.div
-                        key={todo.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15 }}
-                        layout
-                        className="h-full"
-                    >
+                    <motion.div key={todo.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} layout className="h-full">
                         <TodoItem todo={todo} onToggle={onToggle} onDelete={onDelete} onUpdate={onUpdate} />
                     </motion.div>
                 ))}
