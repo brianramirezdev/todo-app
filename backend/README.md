@@ -68,11 +68,18 @@ Base URL: `http://localhost:3001/api` (vía Docker) o `http://localhost:3000/api
 
 ### TODOs
 
-- `GET /todos`: Lista todas las tareas. Soporta query param `?status=all|active|completed`.
-- `POST /todos`: Crea una nueva tarea. Body: `{ "title": "string" }`.
-- `PATCH /todos/:id`: Actualiza título o estado. Body: `{ "title": "string", "completed": boolean }`.
+### TODOs
+
+- `GET /todos`: Lista tareas con soporte para:
+    - **Filtrado**: `?status=all|active|completed`
+    - **Paginación**: `?page=1&limit=10`
+    - **Ordenación**: `?sortBy=createdAt&sortOrder=DESC|ASC`
+    - **Búsqueda**: `?search=texto_a_buscar`
+- `POST /todos`: Crea una nueva tarea/nota. Body: `{ "title": "string", "type": "task" | "note" }`.
+- `PATCH /todos/:id`: Actualiza título o estado.
 - `DELETE /todos/:id`: Elimina una tarea específica.
-- `DELETE /todos`: Elimina **todas** las tareas.
+- `DELETE /todos`: Elimina **todas** las tareas (usando QueryBuilder para un borrado atómico).
+- `POST /todos/seed`: Genera 20+ entradas de prueba con fechas y tipos variados.
 
 ---
 

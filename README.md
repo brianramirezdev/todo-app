@@ -30,25 +30,30 @@ Este proyecto es una aplicación de gestión de tareas (TODO) de nivel profesion
 
 **Estado actual:**
 
-- ✅ **Backend**: API REST funcional con validaciones y tests.
-- ✅ **Frontend**: Interfaz de usuario moderna con React y Tailwind v4.
+- ✅ **Backend**: API REST funcional con paginación real, búsqueda y tests.
+- ✅ **Frontend**: Interfaz de usuario moderna con React, Tailwind v4 y Sidebar avanzado.
 - ✅ **Dockerización**: Pipeline completo para desarrollo y despliegue local.
-- ✅ **Base de Datos**: Gestión automatizada con TypeORM Migrations.
+- ✅ **Base de Datos**: Gestión automatizada con TypeORM Migrations y Seeders técnicos.
 - ✅ **Personalización**: Sistema multi-tema con 5 paletas de colores y modo oscuro/claro.
 
 ---
 
 ## ✨ Características Destacadas
 
+### 📊 Gestión Avanzada de Datos
+- **Paginación y Ordenación Real**: Procesa grandes volúmenes de datos directamente en el servidor.
+- **Búsqueda Integrada**: Filtros técnicos que combinan estado, búsqueda de texto y ordenación (Fecha/A/Z).
+- **Tareas vs Notas**: Distinción visual y funcional entre tareas accionables y notas informativas (estética "paper-like").
+
 ### 🎨 Sistema Multi-Tema
 La aplicación incluye un sistema de personalización avanzado que permite cambiar la estética global instantáneamente:
-- **5 Paletas de Colores**: Indigo (Clásico), Moss (Naturaleza), Charcoal (Minimalista), Punchy (Vibrante) y Queater (Cálido).
+- **5 Paletas de Colores**: Indigo (Clásico), Moss (Naturaleza), Charcoal (Minimalista), Punchy (Vibrante) y Milk (Cálido).
 - **Modos Adaptativos**: Cada tema está optimizado tanto para Modo Claro como para Modo Oscuro.
 - **Persistencia**: La elección del tema y modo se guarda localmente en el navegador.
 
-### ⚡ Rendimiento Optimizado
-- **Carga Inteligente**: Filtrado y búsqueda realizados en cliente para respuestas instantáneas.
-- **Estados Optimistas**: La UI se actualiza antes de que el servidor confirme la operación, eliminando la sensación de latencia.
+### 🛠️ Herramientas de Desarrollo (DX)
+- **Modo Desarrollo**: Dashboard flotante discreto para resetear y sembrar datos de prueba instantáneamente.
+- **Seeder Técnico**: Genera 20+ entradas con fechas pasadas para probar la scanability temporal de la app.
 
 ## 🏗 Arquitectura del Sistema
 
