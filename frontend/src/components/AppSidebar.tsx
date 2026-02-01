@@ -51,8 +51,8 @@ export function AppSidebar({
 }: AppSidebarProps) {
     return (
         <Sidebar>
-            <SidebarHeader className="p-4">
-                <div className="flex items-center gap-2 font-bold text-xl px-2 text-foreground">
+            <SidebarHeader className="p-4 border-b border-sidebar-border/50">
+                <div className="flex items-center gap-2 font-bold text-xl px-2 text-sidebar-foreground">
                     <span className="capitalize">Focuspan</span>
                 </div>
             </SidebarHeader>
@@ -61,21 +61,21 @@ export function AppSidebar({
                 <SidebarGroup>
                     <SidebarGroupContent className="px-2 pb-4">
                         <div className="relative">
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input placeholder="Buscar tareas..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} className="pl-8 h-9" disabled={loading} />
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
+                            <Input placeholder="Buscar tareas..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} className="pl-8 h-9 bg-background border-sidebar-border shadow-sm focus-visible:ring-sidebar-ring" disabled={loading} />
                         </div>
                     </SidebarGroupContent>
                 </SidebarGroup>
 
                 <SidebarGroup>
-                    <SidebarGroupLabel>Filtros</SidebarGroupLabel>
+                    <SidebarGroupLabel className="text-sidebar-foreground/70 font-medium">Filtros</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton isActive={filter === 'all'} onClick={() => onFilterChange('all')} tooltip="Todas las tareas">
                                     <LayoutGrid className="h-4 w-4 text-muted-foreground" />
                                     <span>Todas</span>
-                                    <Badge variant="secondary" className="ml-auto">
+                                    <Badge variant="outline" className="ml-auto bg-sidebar-primary/5 text-sidebar-primary border-sidebar-primary/20">
                                         {activeCount + completedCount}
                                     </Badge>
                                 </SidebarMenuButton>
@@ -85,7 +85,7 @@ export function AppSidebar({
                                 <SidebarMenuButton isActive={filter === 'active'} onClick={() => onFilterChange('active')} tooltip="Tareas pendientes">
                                     <Circle className="h-4 w-4 text-accent-foreground" />
                                     <span>Activas</span>
-                                    <Badge variant="secondary" className="ml-auto">
+                                    <Badge variant="outline" className="ml-auto bg-sidebar-primary/5 text-sidebar-primary border-sidebar-primary/20">
                                         {activeCount}
                                     </Badge>
                                 </SidebarMenuButton>
@@ -95,7 +95,7 @@ export function AppSidebar({
                                 <SidebarMenuButton isActive={filter === 'completed'} onClick={() => onFilterChange('completed')} tooltip="Tareas completadas">
                                     <CheckCircle2 className="h-4 w-4 text-primary" />
                                     <span>Completadas</span>
-                                    <Badge variant="secondary" className="ml-auto">
+                                    <Badge variant="outline" className="ml-auto bg-sidebar-primary/5 text-sidebar-primary border-sidebar-primary/20">
                                         {completedCount}
                                     </Badge>
                                 </SidebarMenuButton>

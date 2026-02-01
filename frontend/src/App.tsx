@@ -22,7 +22,7 @@ function App() {
 
     // Pagination & Sorting State
     const [page, setPage] = useState(1);
-    const [limit] = useState(10);
+    const [limit] = useState(15);
     const [sortBy] = useState('createdAt');
     const [sortOrder] = useState<'ASC' | 'DESC'>('DESC');
     const [metadata, setMetadata] = useState<PaginatedTodoResponse['meta'] | null>(null);
@@ -241,7 +241,7 @@ function App() {
                                         </div>
                                     </div>
 
-                                    <ScrollArea className="flex-1 h-full min-h-0 pr-4 -mr-4">
+                                    <ScrollArea className="flex-1 h-full min-h-0 pr-4 mb-4 -mr-4">
                                         <AnimatedTodoList todos={todos} onToggle={handleToggleTodo} onDelete={handleDeleteTodo} onUpdate={handleUpdateTodo} />
                                     </ScrollArea>
                                 </div>

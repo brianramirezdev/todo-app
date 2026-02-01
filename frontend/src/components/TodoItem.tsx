@@ -40,9 +40,9 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
         <>
             <Card
                 className={cn(
-                    'group transition-all h-full duration-300 border-muted/40 py-0 flex flex-col relative overflow-hidden',
-                    todo.completed && !isNote ? 'bg-muted/10 border-transparent shadow-none' : 'hover:shadow-md hover:border-primary/20 bg-background',
-                    isNote && 'bg-amber-50/20 dark:bg-amber-950/5 border-amber-200/50 dark:border-amber-900/30',
+                    'group transition-all h-full duration-300 border py-0 flex flex-col relative overflow-hidden',
+                    todo.completed && !isNote ? 'bg-muted/50 border-transparent shadow-none' : 'hover:shadow-md border-border shadow-sm hover:border-primary/50 bg-background',
+                    isNote && 'bg-amber-50/60 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/50',
                 )}
             >
                 <div className="p-5 flex flex-col h-full min-h-44 gap-4">
@@ -105,9 +105,9 @@ export function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoItemProps) 
                                 <p
                                     className={cn(
                                         'text-sm leading-relaxed whitespace-pre-wrap transition-all duration-300',
-                                        todo.completed && !isNote ? 'line-through text-muted-foreground/40 font-normal' : 'text-foreground/90 font-medium',
+                                        todo.completed && !isNote ? 'line-through text-muted-foreground/70 font-normal' : 'text-foreground/90 font-medium',
                                         isNote && !isExpanded && 'line-clamp-4',
-                                        isNote && 'text-amber-950/80 dark:text-amber-100/80 font-normal',
+                                        isNote && 'text-amber-950/90 dark:text-amber-100/90 font-normal',
                                     )}
                                 >
                                     {todo.title}
