@@ -20,7 +20,7 @@ export function TodoInput({ onAdd, disabled }: TodoInputProps) {
     const [type, setType] = useState<'task' | 'note'>('task');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!title.trim()) return;
 

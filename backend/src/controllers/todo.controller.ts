@@ -7,7 +7,7 @@ export class TodoController {
     static async getAllTodos(req: Request, res: Response) {
         try {
             const todoRepository = req.app.locals.todoRepository as Repository<Todo>;
-
+            
             // Extract query parameters with defaults
             const status = req.query.status as string || 'all';
             const page = parseInt(req.query.page as string) || 1;

@@ -37,7 +37,7 @@ function App() {
         localStorage.setItem('dev_mode', String(enabled));
         if (enabled) {
             toast.info('Modo Desarrollo activado', {
-                description: 'Ahora tienes acceso a herramientas técnicas.'
+                description: 'Ahora tienes acceso a herramientas técnicas.',
             });
         }
     };
@@ -109,17 +109,11 @@ function App() {
 
         try {
             await todoApi.updateTodo(id, { completed });
-            // No recargamos todo para no interrumpir la vista, pero si el filtro no es 'all',
-            // la tarea debería desaparecer en la siguiente recarga o podemos forzarla.
             if (filter !== 'all') {
-                fetchTodos();
-            } else {
-                // Actualizar contadores manualmente o recargar metadatos
                 fetchTodos();
             }
             completed ? toast.success('Tarea completada') : toast.info('Tarea marcada como pendiente');
         } catch (err) {
-            // Revert on error
             setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !completed } : todo)));
             toast.error('Error al actualizar la tarea');
             console.error(err);
