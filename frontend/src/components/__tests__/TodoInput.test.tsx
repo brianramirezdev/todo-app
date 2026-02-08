@@ -61,11 +61,16 @@ describe('TodoInput', () => {
         expect(onAdd).toHaveBeenCalledWith('Esto es una nota', 'note');
     });
 
-    it('debería deshabilitar el input cuando disabled es true', () => {
+    it('debería deshabilitar el botón de submit cuando disabled es true', () => {
         render(<TodoInput onAdd={vi.fn()} disabled />);
 
-        const input = screen.getByRole('textbox');
-        expect(input).toBeDisabled();
+        // El input NO está deshabilitado
+        expect(screen.getByRole('textbox')).not.toBeDisabled();
+
+        // El botón de submit (el segundo botón en el comp) SÍ está deshabilitado
+        const buttons = screen.getAllByRole('button');
+        const submitBtn = buttons[buttons.length - 1];
+        expect(submitBtn).toBeDisabled();
     });
 
     it('debería mostrar contador solo cuando hay mucho texto (>200)', async () => {

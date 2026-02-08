@@ -51,9 +51,26 @@ frontend/
   - **Moss**: Tonos verdes naturales y relajantes.
   - **Charcoal**: Minimalismo puro en blanco y negro "ink-like".
   - **Punchy**: Colores vibrantes y enérgicos de alto contraste.
-  - **Milk**: Inspirado en tonos crema y naranja cálidos.
+  - **Queater**: Inspirado en tonos crema y naranja cálidos.
 - **DarkMode Nativo**: Versión optimizada para modo oscuro en cada paleta.
 - **Optimistic Updates**: Interacción instantánea sin esperar al servidor.
 - **Responsive Design**: Sidebar colapsable adaptado a móviles y tablets.
 - **Sonner Notifications**: Feedback visual elegante.
 - **Testing Full-Suite**: Pruebas con Vitest + Mocks de ResizeObserver/Radix UI.
+
+---
+
+## 🧪 Testing
+
+El frontend incluye **tests unitarios y de componentes** utilizando **Vitest** y **React Testing Library**.
+
+### ▶️ Ejecutar tests (Local)
+A diferencia del backend, los tests de frontend están diseñados para correr en el entorno local para maximizar la velocidad de desarrollo (Watch Mode).
+
+```bash
+cd frontend
+npm install
+npm test
+```
+
+Esto abrirá Vitest en modo interactivo, permitiéndote ver los resultados en tiempo real mientras editas componentes.

@@ -68,7 +68,7 @@ Base URL: `http://localhost:3001/api` (vía Docker) o `http://localhost:3000/api
 
 ### TODOs
 
-### TODOs
+
 
 - `GET /todos`: Lista tareas con soporte para:
     - **Filtrado**: `?status=all|active|completed`
@@ -93,6 +93,13 @@ Con los contenedores levantados:
 
 ```bash
 docker compose exec backend npm test
+```
+
+### ▶️ Ejecutar tests localmente
+Si no usas Docker, asegúrate de tener la base de datos corriendo y las variables de entorno configuradas antes de ejecutar:
+
+```bash
+npm test
 ```
 
 ---

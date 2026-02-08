@@ -34,6 +34,9 @@ describe('AppSidebar', () => {
         const input = screen.getByPlaceholderText(/buscar/i);
         await user.type(input, 'test');
 
+        // Esperar al debounce
+        await new Promise((resolve) => setTimeout(resolve, 350));
+
         expect(onSearchChange).toHaveBeenCalled();
     });
 
