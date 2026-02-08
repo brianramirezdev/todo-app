@@ -166,7 +166,6 @@ function App() {
                 onFilterChange={setFilter}
                 activeCount={counts.active}
                 completedCount={counts.completed}
-                loading={loading && todos.length === 0}
                 isDevMode={isDevMode}
                 onDevModeChange={toggleDevMode}
             />

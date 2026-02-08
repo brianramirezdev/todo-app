@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     Sidebar,
     SidebarContent,
@@ -33,7 +34,6 @@ interface AppSidebarProps {
     onFilterChange: (filter: TodoStatus) => void;
     activeCount: number;
     completedCount: number;
-    loading: boolean;
     isDevMode: boolean;
     onDevModeChange: (enabled: boolean) => void;
 }
@@ -45,10 +45,27 @@ export function AppSidebar({
     onFilterChange,
     activeCount,
     completedCount,
-    loading,
     isDevMode,
     onDevModeChange
 }: AppSidebarProps) {
+    const [localSearch, setLocalSearch] = useState(searchQuery);
+
+    // Sync local state with prop when prop changes (e.g. clear button)
+    useEffect(() => {
+        setLocalSearch(searchQuery);
+    }, [searchQuery]);
+
+    // Debounce search changes to parent
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (localSearch !== searchQuery) {
+                onSearchChange(localSearch);
+            }
+        }, 300);
+
+        return () => clearTimeout(handler);
+    }, [localSearch, searchQuery, onSearchChange]);
+
     return (
         <Sidebar>
             <SidebarHeader className="p-4 border-b border-sidebar-border/50">
@@ -62,7 +79,12 @@ export function AppSidebar({
                     <SidebarGroupContent className="px-2 pb-4">
                         <div className="relative">
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
-                            <Input placeholder="Buscar tareas..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)} className="pl-8 h-9 bg-background border-sidebar-border shadow-sm focus-visible:ring-sidebar-ring" disabled={loading} />
+                            <Input
+                                placeholder="Buscar tareas..."
+                                value={localSearch}
+                                onChange={(e) => setLocalSearch(e.target.value)}
+                                className="pl-8 h-9 bg-background border-sidebar-border shadow-sm focus-visible:ring-sidebar-ring"
+                            />
                         </div>
                     </SidebarGroupContent>
                 </SidebarGroup>

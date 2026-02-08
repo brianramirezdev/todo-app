@@ -65,7 +65,6 @@ export function TodoInput({ onAdd, disabled }: TodoInputProps) {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder={type === 'task' ? "Añadir una tarea..." : "Escribir una nota..."}
-                    disabled={disabled}
                     maxLength={255}
                     className={cn(
                         'h-11 pl-12 pr-12 text-base w-full bg-muted/30 border-transparent transition-all rounded-xl',
