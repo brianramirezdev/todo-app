@@ -187,6 +187,19 @@ Para detalles específicos de cada componente, consulta sus propios manuales:
 
 ---
 
+## 🧠 Decisiones Técnicas y Mejoras Futuras
+
+**Decisiones:**
+Se optó por una **arquitectura desacoplada** (Client/Server) orquestada con **Docker** para garantizar consistencia entre desarrollo y producción. En el backend, la separación por capas (Rutas -> Controladores -> Servicios -> Entidades) facilita la escalabilidad y el testing. Para el frontend, el uso de **estados optimistas** y **Tailwind v4** prioriza una UX fluida y moderna, mientras que la paginación se delegó al servidor para optimizar el rendimiento con grandes volúmenes de datos.
+
+**Mejoras Futuras:**
+1.  **Autenticación y Multiusuario:** Implementar JWT para que cada usuario tenga sus propias listas privadas.
+2.  **Testing E2E:** Añadir Cypress o Playwright para probar flujos completos de usuario crítico.
+3.  **WebSockets:** Implementar Socket.io para colaboración en tiempo real entre múltiples pestañas/usuarios.
+4.  **Categorías Personalizadas:** Permitir crear etiquetas dinámicas más allá de "Nota" y "Tarea".
+
+---
+
 ## 📝 Licencia
 
 MIT
