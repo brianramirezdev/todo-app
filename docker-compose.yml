@@ -44,6 +44,9 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
+        volumes:
+            - ./backend:/app
+            - /app/node_modules
         networks:
             - todo-network
         restart: unless-stopped
