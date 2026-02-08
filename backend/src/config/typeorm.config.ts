@@ -19,5 +19,5 @@ export const AppDataSource = new DataSource({
     dropSchema: false, // Evitamos borrar esquema para mayor estabilidad
     logging: false,
     entities: [Todo],
-    migrations: [],
+    migrations: [__dirname + '/../migrations/*.ts'], // Habilitamos de nuevo las migraciones
 });

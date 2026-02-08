@@ -89,19 +89,12 @@ Base URL: `http://localhost:3001/api` (vía Docker) o `http://localhost:3000/api
 
 El backend incluye **tests de integración** con **Jest + Supertest**.
 
-### ▶️ Ejecutar tests con Docker (recomendado)
+### ▶️ Ejecutar tests (Docker)
 
-Con los contenedores levantados:
+Esta es la forma recomendada y más fiable, ya que Docker gestiona el entorno y la base de datos de test automáticamente:
 
 ```bash
 docker compose exec backend npm test
-```
-
-### ▶️ Ejecutar tests localmente
-Si no usas Docker, asegúrate de tener la base de datos corriendo y las variables de entorno configuradas antes de ejecutar:
-
-```bash
-npm test
 ```
 
 ---
