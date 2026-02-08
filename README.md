@@ -116,32 +116,25 @@ docker compose up --build
 
 Si prefieres ejecutar los servicios de forma independiente:
 
-### 1. Variables de Entorno
+### 1. Base de Datos
 
-Copia el archivo `.env.example` a `.env` en la raíz y configura tus credenciales locales.
-
-```bash
-cp .env.example .env
-```
-
-### 2. Base de Datos
-
-Necesitarás una instancia de PostgreSQL corriendo. Puedes usar solo la DB de Docker:
+Necesitarás una instancia de PostgreSQL corriendo (puerto 5432, user/pass: `postgres`). Puedes usar la de Docker:
 
 ```bash
 docker compose up -d postgres
 ```
 
-### 3. Backend
+### 2. Backend
 
 ```bash
 cd backend
 npm install
 npm run migration:run
 npm run dev
+# El servidor iniciará en http://localhost:3000
 ```
 
-### 4. Frontend
+### 3. Frontend
 
 ```bash
 cd frontend

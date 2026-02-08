@@ -34,7 +34,9 @@ backend/
 
 ## ⚙️ Configuración (Variables de Entorno)
 
-El backend requiere un archivo `.env` en la carpeta `backend/` con las siguientes variables:
+El backend **no requiere configuración adicional** para desarrollo local si usas los valores por defecto (PostgreSQL en localhost:5432).
+
+Si necesitas personalizarlo, puedes crear un archivo `.env` en la carpeta `backend/` para sobrescribir los valores por defecto:
 
 | Variable      | Descripción                | Valor Default                     |
 | :------------ | :------------------------- | :-------------------------------- |
