@@ -1,4 +1,4 @@
-# 📝 Todo App Full-Stack
+# 📝 Focuspan
 
 > Aplicación TODO moderna con arquitectura desacoplada, construida con **TypeScript**, **React**, **Express**, **PostgreSQL** y **TypeORM**.
 
